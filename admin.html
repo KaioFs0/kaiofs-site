@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Painel do corretor | Kaio Imóveis</title>
+<meta name="theme-color" content="#0c1a2e">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23b8935a'/><text x='50' y='68' font-size='56' font-weight='800' text-anchor='middle' fill='%230c1a2e' font-family='Arial,sans-serif'>K</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body class="adm">
+
+<!-- LOGIN -->
+<main id="login" class="adm-login" hidden>
+  <div class="adm-login__box">
+    <div class="brand adm-login__brand"><span class="brand__mark">K</span><span class="brand__txt">Painel do corretor<small>Kaio · Imóveis</small></span></div>
+    <h1>Entrar no painel</h1>
+    <p class="muted">Aqui você publica, altera, desativa e exclui os imóveis do site.</p>
+    <form id="loginForm" autocomplete="off">
+      <div class="adm-grid">
+        <label class="adm-f"><span class="adm-lbl">Usuário do GitHub</span><input id="lOwner" required placeholder="seu-usuario"></label>
+        <label class="adm-f"><span class="adm-lbl">Repositório do site</span><input id="lRepo" required placeholder="kaiofs-site"></label>
+      </div>
+      <label class="adm-f"><span class="adm-lbl">Chave de acesso (token do GitHub)</span><input id="lToken" type="password" required placeholder="github_pat_..." autocomplete="off"></label>
+      <details class="adm-help">
+        <summary>Como criar a chave de acesso (uma vez só)</summary>
+        <ol>
+          <li>Entre em <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a>.</li>
+          <li>Dê um nome (ex.: <em>Painel do site</em>) e escolha a validade.</li>
+          <li>Em <b>Repository access</b>, marque <b>Only select repositories</b> e escolha o repositório do site.</li>
+          <li>Em <b>Permissions → Repository permissions → Contents</b>, escolha <b>Read and write</b>.</li>
+          <li>Clique em <b>Generate token</b>, copie a chave e cole aqui.</li>
+        </ol>
+        <p>A chave só funciona no repositório do site e fica guardada apenas neste aparelho. Não compartilhe com ninguém.</p>
+      </details>
+      <div class="adm-login__opts">
+        <label class="adm-check"><input type="checkbox" id="lRemember" checked> Manter conectado neste aparelho</label>
+        <label class="adm-f adm-f--mini"><span class="adm-lbl">Branch</span><input id="lBranch" value="main"></label>
+      </div>
+      <p class="adm-err" id="loginErr" role="alert"></p>
+      <button class="btn btn--gold adm-login__btn" id="loginBtn"><i class="ti ti-login"></i> Entrar</button>
+    </form>
+    <a class="adm-back" href="index.html"><i class="ti ti-arrow-left"></i> Voltar para o site</a>
+  </div>
+</main>
+
+<!-- PAINEL -->
+<div id="app" hidden>
+  <header class="adm-top">
+    <div class="adm-top__in">
+      <div class="brand"><span class="brand__mark">K</span><span class="brand__txt">Painel do corretor<small id="repoName"></small></span></div>
+      <div class="adm-top__act">
+        <a class="btn btn--ghost btn--sm" href="index.html" target="_blank" rel="noopener"><i class="ti ti-world"></i> Ver site</a>
+        <button class="btn btn--ghost btn--sm" id="logout"><i class="ti ti-logout"></i> Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="adm-main">
+    <div class="adm-head">
+      <div>
+        <h1>Imóveis</h1>
+        <p class="muted" id="summary"></p>
+      </div>
+      <button class="btn btn--gold" data-new><i class="ti ti-plus"></i> Novo imóvel</button>
+    </div>
+
+    <div class="adm-tabs" id="tabs" role="tablist">
+      <button class="adm-tab is-on" data-type="venda" role="tab"><i class="ti ti-key"></i> À venda <em>…</em></button>
+      <button class="adm-tab" data-type="aluguel" role="tab"><i class="ti ti-home-search"></i> Aluguel <em>…</em></button>
+      <button class="adm-tab" data-type="comercial" role="tab"><i class="ti ti-building-warehouse"></i> Comercial <em>…</em></button>
+    </div>
+
+    <div class="adm-tools">
+      <label class="adm-search"><i class="ti ti-search"></i><input id="search" type="search" placeholder="Buscar por nome, bairro ou cidade"></label>
+      <select id="statusF" aria-label="Filtrar por situação">
+        <option value="todos">Todos</option>
+        <option value="ativos">No site</option>
+        <option value="inativos">Desativados</option>
+      </select>
+      <button class="btn btn--line btn--sm" id="reload" title="Recarregar"><i class="ti ti-refresh"></i> Recarregar</button>
+    </div>
+
+    <div id="list" class="adm-list"></div>
+  </main>
+</div>
+
+<!-- EDITOR -->
+<div id="editor" class="adm-ed" hidden>
+  <div class="adm-ed__panel" role="dialog" aria-modal="true" aria-labelledby="edTitle">
+    <header class="adm-ed__head">
+      <div><h2 id="edTitle">Imóvel</h2><p id="edSub" class="muted"></p></div>
+      <button class="adm-ic" id="edClose" title="Fechar"><i class="ti ti-x"></i></button>
+    </header>
+    <form id="edForm" class="adm-ed__body" onsubmit="return false"></form>
+    <footer class="adm-ed__foot">
+      <button class="btn btn--line" id="edCancel">Cancelar</button>
+      <button class="btn btn--gold" id="edSave"><i class="ti ti-device-floppy"></i> Salvar e publicar</button>
+    </footer>
+  </div>
+</div>
+
+<dialog id="confirm" class="adm-dlg">
+  <form method="dialog">
+    <h3 id="confirmT"></h3>
+    <p id="confirmP"></p>
+    <div class="adm-dlg__act">
+      <button class="btn btn--line" id="confirmNo" value="cancel">Cancelar</button>
+      <button id="confirmOk" value="ok" class="btn btn--gold">Confirmar</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="admin.js"></script>
+</body>
+</html>

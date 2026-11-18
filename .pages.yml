@@ -1,0 +1,275 @@
+# Painel de edição do site (Pages CMS - https://app.pagescms.org)
+# Entre com sua conta do GitHub, escolha este repositório e edite os imóveis por formulário.
+
+media:
+  input: imagens/imoveis
+  output: /imagens/imoveis
+
+content:
+  - name: venda
+    label: Imóveis à venda
+    type: file
+    path: data/venda.json
+    format: json
+    list: true
+    fields:
+      - name: titulo
+        label: Nome do imóvel / empreendimento
+        type: string
+        required: true
+      - name: codigo
+        label: Código do imóvel (ex. KV-004)
+        type: string
+      - name: negocio
+        label: Situação do negócio
+        type: select
+        default: Disponível
+        options:
+          values: [Disponível, Vendido]
+      - name: ativo
+        label: Mostrar no site
+        type: boolean
+        default: true
+      - name: destaque
+        label: Destacar na página inicial (máx. 3)
+        type: boolean
+        default: false
+      - name: tipo
+        label: Tipo
+        type: select
+        options:
+          values: [Apartamento, Casa, Studio, Cobertura, Terreno]
+      - name: situacao
+        label: Situação
+        type: select
+        options:
+          values: [Lançamento, Em obras, Pronto para morar]
+      - name: preco
+        label: Preço (ex. A partir de R$ 450.000)
+        type: string
+      - name: endereco
+        label: Endereço (rua e número)
+        type: string
+      - name: bairro
+        label: Bairro
+        type: string
+      - name: cidade
+        label: Cidade
+        type: string
+        default: São Paulo
+      - name: estado
+        label: Estado (UF)
+        type: select
+        default: SP
+        options:
+          values: [AC, AL, AP, AM, BA, CE, DF, ES, GO, MA, MT, MS, MG, PA, PB, PR, PE, PI, RJ, RN, RS, RO, RR, SC, SP, SE, TO]
+      - name: quartos
+        label: Quartos
+        type: number
+      - name: banheiros
+        label: Banheiros
+        type: number
+      - name: vagas
+        label: Vagas
+        type: number
+      - name: area
+        label: Área (m²)
+        type: string
+      - name: fotos
+        label: Fotos (até 4, a primeira é a capa)
+        type: image
+        options:
+          multiple:
+            max: 4
+          extensions: [jpg, jpeg, png, webp]
+          rename: true
+      - name: video
+        label: Vídeo (link do YouTube)
+        type: string
+      - name: descricao
+        label: Descrição
+        type: text
+      - name: diferenciais
+        label: Diferenciais (um por linha)
+        type: string
+        list: true
+
+  - name: aluguel
+    label: Imóveis para alugar
+    type: file
+    path: data/aluguel.json
+    format: json
+    list: true
+    fields:
+      - name: titulo
+        label: Nome do imóvel
+        type: string
+        required: true
+      - name: codigo
+        label: Código do imóvel (ex. KA-004)
+        type: string
+      - name: negocio
+        label: Situação do negócio
+        type: select
+        default: Disponível
+        options:
+          values: [Disponível, Alugado]
+      - name: ativo
+        label: Mostrar no site
+        type: boolean
+        default: true
+      - name: tipo
+        label: Tipo
+        type: select
+        options:
+          values: [Apartamento, Casa, Studio, Cobertura]
+      - name: mobiliado
+        label: Mobiliado
+        type: boolean
+        default: false
+      - name: preco
+        label: Aluguel (ex. R$ 2.800/mês)
+        type: string
+      - name: condominio
+        label: Condomínio (ex. R$ 450)
+        type: string
+      - name: iptu
+        label: IPTU (ex. R$ 90)
+        type: string
+      - name: endereco
+        label: Endereço (rua e número)
+        type: string
+      - name: bairro
+        label: Bairro
+        type: string
+      - name: cidade
+        label: Cidade
+        type: string
+        default: São Paulo
+      - name: estado
+        label: Estado (UF)
+        type: select
+        default: SP
+        options:
+          values: [AC, AL, AP, AM, BA, CE, DF, ES, GO, MA, MT, MS, MG, PA, PB, PR, PE, PI, RJ, RN, RS, RO, RR, SC, SP, SE, TO]
+      - name: quartos
+        label: Quartos
+        type: number
+      - name: banheiros
+        label: Banheiros
+        type: number
+      - name: vagas
+        label: Vagas
+        type: number
+      - name: area
+        label: Área (m²)
+        type: string
+      - name: fotos
+        label: Fotos (até 4, a primeira é a capa)
+        type: image
+        options:
+          multiple:
+            max: 4
+          extensions: [jpg, jpeg, png, webp]
+          rename: true
+      - name: video
+        label: Vídeo (link do YouTube)
+        type: string
+      - name: descricao
+        label: Descrição
+        type: text
+      - name: diferenciais
+        label: Diferenciais (um por linha)
+        type: string
+        list: true
+
+  - name: comercial
+    label: Imóveis comerciais
+    type: file
+    path: data/comercial.json
+    format: json
+    list: true
+    fields:
+      - name: titulo
+        label: Nome do imóvel
+        type: string
+        required: true
+      - name: codigo
+        label: Código do imóvel (ex. KC-004)
+        type: string
+      - name: negocio
+        label: Situação do negócio
+        type: select
+        default: Disponível
+        options:
+          values: [Disponível, Vendido, Alugado]
+      - name: ativo
+        label: Mostrar no site
+        type: boolean
+        default: true
+      - name: finalidade
+        label: Finalidade
+        type: select
+        default: Locação
+        options:
+          values: [Venda, Locação]
+      - name: tipo
+        label: Tipo
+        type: select
+        options:
+          values: [Galpão, Sala comercial, Laje corporativa, Loja, Prédio comercial, Terreno comercial]
+      - name: preco
+        label: Preço ou aluguel (ex. R$ 25.000/mês)
+        type: string
+      - name: condominio
+        label: Condomínio (se houver)
+        type: string
+      - name: iptu
+        label: IPTU (se houver)
+        type: string
+      - name: endereco
+        label: Endereço (rua e número)
+        type: string
+      - name: bairro
+        label: Bairro
+        type: string
+      - name: cidade
+        label: Cidade
+        type: string
+        default: São Paulo
+      - name: estado
+        label: Estado (UF)
+        type: select
+        default: SP
+        options:
+          values: [AC, AL, AP, AM, BA, CE, DF, ES, GO, MA, MT, MS, MG, PA, PB, PR, PE, PI, RJ, RN, RS, RO, RR, SC, SP, SE, TO]
+      - name: area
+        label: Área (m²)
+        type: string
+      - name: pe_direito
+        label: Pé-direito (m)
+        type: string
+      - name: banheiros
+        label: Banheiros
+        type: number
+      - name: vagas
+        label: Vagas
+        type: number
+      - name: fotos
+        label: Fotos (até 4, a primeira é a capa)
+        type: image
+        options:
+          multiple:
+            max: 4
+          extensions: [jpg, jpeg, png, webp]
+          rename: true
+      - name: video
+        label: Vídeo (link do YouTube)
+        type: string
+      - name: descricao
+        label: Descrição
+        type: text
+      - name: diferenciais
+        label: Diferenciais (um por linha)
+        type: string
+        list: true
